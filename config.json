@@ -1,0 +1,21 @@
+{
+    "ConfigItems": 
+        [
+            {
+                "Name": "ThresholdInMintues",
+                "Value": "15"
+            },
+            {
+                "Name": "ControllerURL",
+                "Value": "https://customerName.saas.appdynamics.com"
+            },
+            {
+                "Name": "OAuthToken", 
+                "Value": "PASTE TOKEN HERE"   
+            },
+            {
+                "Name": "ApplicationList", 
+                "Value": "app1,app2,app3,app4,app5" 
+            }
+        ]
+}
