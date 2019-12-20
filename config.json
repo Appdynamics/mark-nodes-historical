@@ -2,7 +2,7 @@
     "ConfigItems": 
         [
             {
-                "Name": "ThresholdInMintues",
+                "Name": "NodeAvailabilityThreshold",
                 "Value": "15"
             },
             {
