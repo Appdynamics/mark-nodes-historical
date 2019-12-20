@@ -1,5 +1,5 @@
 #Logging initializations: change as you deem fit
-$LogDir = "C:\AppDynamics\Reaper"
+$LogDir = ".\logs"
 $ilogFile = "Repaer.log"
 
 $LogPath = $LogDir + '\' + $iLogFile
@@ -55,7 +55,7 @@ $confFileContent = (Get-Content $confFile -Raw) | ConvertFrom-Json
 $controllerURL = $confFileContent.ConfigItems | where-Object { $_.Name -eq "ControllerURL" } | Select-Object -ExpandProperty Value
 $OAuthToken = $confFileContent.ConfigItems | where-Object { $_.Name -eq "OAuthToken" } | Select-Object -ExpandProperty Value
 $apps = $confFileContent.ConfigItems | where-Object { $_.Name -eq "ApplicationList" } | Select-Object -ExpandProperty Value
-$ThresholdInMintues = $confFileContent.ConfigItems | where-Object { $_.Name -eq "ThresholdInMintues" } | Select-Object -ExpandProperty Value
+$ThresholdInMintues = $confFileContent.ConfigItems | where-Object { $_.Name -eq "NodeAvailabilityThreshold" } | Select-Object -ExpandProperty Value
 
 $JWTToken = "Bearer $OAuthToken"
 
