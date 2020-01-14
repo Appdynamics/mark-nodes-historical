@@ -59,10 +59,7 @@ $ThresholdInMintues = $confFileContent.ConfigItems | where-Object { $_.Name -eq 
 
 [int]$ExecutionFrequencyInMinutes = $confFileContent.ConfigItems | where-Object { $_.Name -eq "ExecutionFrequencyInMinutes" } | Select-Object -ExpandProperty Value
 
-if ([string]::IsNullOrEmpty($controllerURL) -or [string]::IsNullOrEmpty($OAuthToken) -or [string]::IsNullOrEmpty($apps) -or [string]::IsNullOrEmpty($ThresholdInMintues) -or [string]::IsNullOrEmpty($ExecutionFrequencyInMinutes)) {
-    
-
-}
+#if([string]::IsNullOrEmpty($controllerURL) -or [string]::IsNullOrEmpty($OAuthToken) -or [string]::IsNullOrEmpty($apps) -or [string]::IsNullOrEmpty($ThresholdInMintues) -or [string]::IsNullOrEmpty($ExecutionFrequencyInMinutes)) {}
 
 [int]$SleepTime = $ExecutionFrequencyInMinutes * 60 
 Write-Host $SleepTime
