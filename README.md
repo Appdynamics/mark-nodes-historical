@@ -63,7 +63,9 @@ The script was written and test in Powershell Core 6.0  - which means it can run
 
 ## Running in a Docker container 
 
-*  To run this script in a docker container, enter the details in the config.json file as described above and run `docker-compose up` .           The first time you run this command, you will see a lot of console output as the Docker image is built, followed by output similar to this:
+*  To run this script in a docker container, enter the details in the config.json file as described above and run `docker-compose up` .   
+
+The first time you run this command, you will see a lot of console output as the Docker image is built, followed by output similar to this:
 
 ````````````
 mark-nodes-historical $ docker-compose up --build
@@ -96,9 +98,9 @@ Attaching to node-reaper
 
 ````````````
 
-* To Stop the container, run:  docker-compose stop
+* To Stop the container, run:  `docker-compose stop`
 
-* To Rebuild the container, run docker-compose up --build
+* To Rebuild the container, `run docker-compose up --build`
 
 ## What is Next 
 
