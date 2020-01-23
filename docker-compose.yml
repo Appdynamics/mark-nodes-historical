@@ -1,0 +1,11 @@
+
+version: '3'
+
+services:
+  mark-nodes-historical:
+    build: .
+    container_name: node-reaper
+    image: appdynamics/node-reaper
+    volumes:
+      - /:/hostroot:ro
+      - /var/run/docker.sock:/var/run/docker.sock

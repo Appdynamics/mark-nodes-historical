@@ -31,7 +31,7 @@ The script was written and test in Powershell Core 6.0  - which means it can run
   - How to upgrade Windows PowerShell to 5.1 [Documentation](https://docs.microsoft.com/en-us/skypeforbusiness/set-up-your-computer-for-windows-powershell/download-and-install-windows-powershell-5-1)
  - How to install PowerShell Core on Windows (if you decide to use Powershell Core on Windows instead of upgrading to Windows PowerShell 5.1) [Documentation](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6)
  
-It can also be bundled into a Docker container. [Please refer to the Docker section]
+<i>It can also be bundled into a Docker container. [Please refer to the Docker container section below] </i>
 
 ### Running the script 
 
@@ -47,11 +47,64 @@ It can also be bundled into a Docker container. [Please refer to the Docker sect
 
 2. Run the `NodeReaper.ps1` script. 
 
-3. Check  the `logs` folders
+3. Check  the `logs/Aduit.log` file. The audit log should like this: 
 
-What is next? 
+``````````````
+2020/01/07 00:43:17 INFO Marked con-06HT8BPDCM6(845513) in appd-fix-sleeving-uat application as a historical node.
+2020/01/07 00:43:17 INFO Marked WIN-5OI56V7AVUB(845524) in appd-fix-sleeving-uat application as a historical node.
+2020/01/07 00:52:46 INFO Marked LIN-06HT8BPDCM6(845512) in appd-fix-sleeving-uat application as a historical node.
+2020/01/07 00:52:46 INFO Marked JET-5OI56V7AVUB(845524) in appd-fix-sleeving-uat application as a historical node.
+2020/01/07 00:56:37 INFO Marked io2-IL1R5UC26B0(842997) in appd-fix-sleeving-dev application as a historical node.
+2020/01/07 00:56:38 INFO Marked NAO-JMJ3IPQ4E1F(843018) in appd-fix-sleeving-dev application as a historical node.
+2020/01/07 00:56:38 INFO Marked RO1-2KSN12PNIC2(843099) in appd-fix-sleeving-dev application as a historical node.
+2020/01/07 01:08:06 INFO Marked MYN-JMJ3IPQ4E1F(843011) in appd-sion-fix-sleeving-dev application as a historical node.
+2020/01/07 01:08:06 INFO Marked ZZ1-2KSN12PNIC2(843097) in appd-fix-sleeving-dev application as a historical node.
+``````````````
+
+## Running in a Docker container 
+
+*  To run this script in a docker container, enter the details in the config.json file as described above and run `docker-compose up` .           The first time you run this command, you will see a lot of console output as the Docker image is built, followed by output similar to this:
+
+````````````
+mark-nodes-historical $ docker-compose up --build
+Building mark-nodes-historical
+Step 1/7 : FROM mcr.microsoft.com/powershell
+ ---> 10749ad42dfb
+Step 2/7 : RUN apt-get update &&     apt-get upgrade -y &&     apt-get clean
+ ---> Using cache
+ ---> 5a69f02c768b
+Step 3/7 : ENV SCRIPT_HOME /opt/appdynamics/mark-node-historical
+ ---> Using cache
+ ---> 8aeee3ab41a3
+Step 4/7 : RUN mkdir -p ${SCRIPT_HOME}
+ ---> Using cache
+ ---> cab2c82e4082
+Step 5/7 : COPY * ${SCRIPT_HOME}/
+ ---> bc9d437ae1e6
+Step 6/7 : WORKDIR ${SCRIPT_HOME}
+ ---> Running in 422f52bc2df9
+Removing intermediate container 422f52bc2df9
+ ---> d03b2a7b7353
+Step 7/7 : CMD ls -ltr & pwsh ./NodeReaper.ps1
+ ---> Running in e0466b469f3f
+Removing intermediate container e0466b469f3f
+ ---> da31e68f5ede
+Successfully built da31e68f5ede
+Successfully tagged appdynamics/node-reaper:latest
+Recreating node-reaper ... done
+Attaching to node-reaper
+
+````````````
+
+* To Stop the container, run:  docker-compose stop
+
+* To Rebuild the container, run docker-compose up --build
+
+## What is Next 
 
 1. Add 'All application' flag. 
+
+
 
 ## Reference
 

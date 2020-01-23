@@ -8,20 +8,19 @@
             
             {
                 "Name": "ExecutionFrequencyInMinutes",
-                "Value": "80"
+                "Value": "1"
             },
-
             {
                 "Name": "ControllerURL",
-                "Value": "https://customer.saas.appdynamics.com"
+                "Value": "https://tpicap-dev.saas.appdynamics.com"
             },
             {
                 "Name": "OAuthToken", 
-                "Value": ""   
+                "Value": "eyJraWQiOiIyODJmYTg2MS01NTRlLTQwNzMtYmEwYy1hNWY3N2YyN2FkMTEiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImp0aSI6Ijl4NUJmSmlDQW5SZXM1LUZCeDVOZmciLCJzdWIiOiJSZXBlYXIiLCJpZFR5cGUiOiJBUElfQ0xJRU5UIiwiaWQiOiI4MWIzZDRlNS04ZjEwLTQ5MGUtYTkzYi1iMGU0NjNhYWI4YmYiLCJhY2N0SWQiOiIyODJmYTg2MS01NTRlLTQwNzMtYmEwYy1hNWY3N2YyN2FkMTEiLCJ0bnRJZCI6IjI4MmZhODYxLTU1NGUtNDA3My1iYTBjLWE1Zjc3ZjI3YWQxMSIsImFjY3ROYW1lIjoidHBpY2FwLWRldiIsInRlbmFudE5hbWUiOiIiLCJmbW1UbnRJZCI6bnVsbCwiYWNjdFBlcm0iOltdLCJpYXQiOjE1NzY1MjI1NjYsIm5iZiI6MTU3NjUyMjQ0NiwiZXhwIjoxNjA4MDU4NTY2LCJ0b2tlblR5cGUiOiJBQ0NFU1MifQ.9Xuux8fwehAlU8qF5YRYZpBNMAOgO4SAJQrc-2pVkjg"   
             },
             {
                 "Name": "ApplicationList", 
-                "Value": "app1,app2,app3,app4" 
+                "Value": "fusion-fifx-dev" 
             }
         ]
 }
