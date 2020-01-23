@@ -11,7 +11,7 @@ The above solution does not work in some instances due to the following reasons:
 
 1. This will ONLY work if the instrumented application shuts down gracefully, this is seldom the case for containerised applications. 
 2. The .Net agent has not implemented a similar solution, it's only available for Java. 
-3. The minimum time the Controller can be configured to mark nodes as historical is 1 hour, this is too long in most cases as it results in false positive alerts. The setting is called `node.retention.period` . 
+3. The minimum time the Controller can be configured to mark nodes as historical is 1 hour, this is too long in most cases as it results in false-positive alerts. The setting is called `node.retention.period` . 
 4. No granularity to selectively apply the setting (in 3 above) to a set of applications. 
 
 This project was created to resolve the stated limitations, the script runs at a pre-defined scheduled interval and mark nodes that have not reported to the controller over a pre-defined 'node availability threshold' period as historical nodes. The process runs only on a predefined application. 
@@ -42,8 +42,8 @@ It can also be bundled into a Docker container. [Please refer to the Docker sect
   | NodeAvailabilityThresholdInMinutes  | This threshold is used to determine nodes that are due to be marked as historical on the basis of how long a node has lost contact with the Controller |
   | ExecutionFrequencyInMinutes  | This config property controls how long the script sleeps after each execution. Use this to control the execution frequency |
   | ControllerURL  | You AppDynamics controller URL - including http/s bit |
-  | OAuthToken  | Create an API Client that has an admin priviledge on the target application(s). [READ MORE](https://docs.appdynamics.com/display/latest/API+Clients) |
-  | ApplicationList | Define the list of target applications, comma seperated: app1,app2,app3  |
+  | OAuthToken  | Create an API Client that has an admin privilege on the target application(s). [READ MORE](https://docs.appdynamics.com/display/latest/API+Clients) |
+  | ApplicationList | Define the list of target applications, comma separated: app1,app2,app3  |
 
 2. Run the `NodeReaper.ps1` script. 
 
@@ -52,7 +52,6 @@ It can also be bundled into a Docker container. [Please refer to the Docker sect
 What is next? 
 
 1. Add 'All application' flag. 
-
 
 ## Reference
 
