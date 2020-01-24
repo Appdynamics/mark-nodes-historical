@@ -1,0 +1,26 @@
+{
+    "ConfigItems": 
+        [
+            {
+                "Name": "NodeAvailabilityThresholdInMinutes",
+                "Value": "15"
+            },
+            
+            {
+                "Name": "ExecutionFrequencyInMinutes",
+                "Value": "1"
+            },
+            {
+                "Name": "ControllerURL",
+                "Value": "https://customer.saas.appdynamics.com"
+            },
+            {
+                "Name": "OAuthToken", 
+                "Value": ""   
+            },
+            {
+                "Name": "ApplicationList", 
+                "Value": "app1,app3,app3" 
+            }
+        ]
+}
