@@ -47,7 +47,7 @@ The script was written and test in Powershell Core 6.0  - which means it can run
 
 2. Run the `NodeReaper.ps1` script. 
 
-3. Check  the `logs/Aduit.log` file. The audit log should like this: 
+3. Check  the `logs/Aduit.log` file. The audit log should look like this: 
 
 ``````````````
 2020/01/07 00:43:17 INFO Marked con-06HT8BPDCM6(845513) in appd-fix-sleeving-uat application as a historical node.
