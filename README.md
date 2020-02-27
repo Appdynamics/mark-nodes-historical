@@ -1,7 +1,7 @@
 # Mark Nodes Historical
 Mark AppDynamics Nodes as Historical Nodes 
 
-In a typical microservices architecture where services are designed to be transient, AppDynamics customers may notice that although a service container/node has been destroyed, the node that represents the service in question is still visible in the AppDynamics Controller - often with a Red Health status.  
+In a typical microservices architecture where services are designed to be transient, AppDynamics customers may notice that although a service instance or container has been destroyed, the node that represents the service in question is still visible in the AppDynamics Controller - often with a critical health status.  
 
 The process of removing torn down nodes from AppDynamics is called 'marking nodes as historical'. By default, the Controller considers a node historical after about 20 days of inactivity and deletes the node after 30 days. When a node is marked as historical, the Controller suspends certain types of processing activities for the node, such as rule evaluation.  
 
@@ -10,11 +10,11 @@ AppDynamics has an inbuilt solution to instantaneously mark nodes as historical,
 The above solution does not work in some instances due to the following reasons: 
 
 1. This will ONLY work if the instrumented application shuts down gracefully, this is seldom the case for containerised applications. 
-2. The .Net agent has not implemented a similar solution, it's only available for Java. 
+2. The .Net agent has not implemented a similar solution
 3. The minimum time the Controller can be configured to mark nodes as historical is 1 hour, this is too long in most cases as it results in false-positive alerts. The setting is called `node.retention.period` . 
-4. No granularity to selectively apply the setting (in 3 above) to a set of applications. 
+4. No granularity to selectively apply the setting (in 3 above) to a set of applications or tiers. 
 
-This project was created to resolve the stated limitations, the script runs at a pre-defined scheduled interval and mark nodes that have not reported to the controller over a pre-defined 'node availability threshold' period as historical nodes. The process runs only on a predefined application. 
+This project was created to resolve the stated limitations, the script runs at a pre-defined scheduled interval and mark nodes that have not reported to the controller over a pre-defined 'node availability threshold' period as historical nodes. The process runs only on a set of predefined application. 
 
 Historical nodes are not visible in the controller, as a result, it is important to keep an audit trail of all nodes that were marked as historical by this script. The Audit log is located in the `logs` folder of the project. 
 
@@ -31,7 +31,7 @@ The script was written and test in Powershell Core 6.0  - which means it can run
   - How to upgrade Windows PowerShell to 5.1 [Documentation](https://docs.microsoft.com/en-us/skypeforbusiness/set-up-your-computer-for-windows-powershell/download-and-install-windows-powershell-5-1)
  - How to install PowerShell Core on Windows (if you decide to use Powershell Core on Windows instead of upgrading to Windows PowerShell 5.1) [Documentation](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6)
  
-<i>It can also be bundled into a Docker container. [Please refer to the Docker container section below] </i>
+<i>It can also be bundled into a Docker container. Please refer to the Docker container section below </i>
 
 ### Running the script 
 
