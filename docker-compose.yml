@@ -4,8 +4,8 @@ version: '3'
 services:
   mark-nodes-historical:
     build: .
-    container_name: node-reaper
-    image: appdynamics/node-reaper
+    container_name: mark-nodes-historical
+    image: appdynamicscx/mark-nodes-historical
     volumes:
       - /:/hostroot:ro
       - /var/run/docker.sock:/var/run/docker.sock

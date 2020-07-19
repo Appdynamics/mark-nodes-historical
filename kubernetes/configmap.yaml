@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  APPDYNAMICS_CONTROLLER_URL: http://controller-2060nosshco-o3wdq4ip.appd-cx.com:8090
+  APPDYNAMICS_EXECUTE_ONCE_OR_CONTINUOUS: once #best to use `once` in k8s to save compute cost. User cronjob schedule spec instead  
+  APPDYNAMICS_EXECUTION_FREQUENCY: "60" #minutes. APPDYNAMICS_EXECUTE_ONCE_OR_CONTINUOUS if set to `once` overrides this setting.
+  APPDYNAMICS_NODE_AVAILABILITY_THRESHOLD: "15" #if a node haven't reported to the controller for APPDYNAMICS_NODE_AVAILABILITY_THRESHOLD minutes, mark it as historical  
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: mark-nodes-historical-config

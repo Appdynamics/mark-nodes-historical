@@ -3,16 +3,20 @@
         [
             {
                 "Name": "NodeAvailabilityThresholdInMinutes",
-                "Value": "15"
+                "Value": "7"
             },
             
             {
                 "Name": "ExecutionFrequencyInMinutes",
-                "Value": "1"
+                "Value": "4"
+            },
+            {
+                "Name": "ExecuteOnceORContinuous",
+                "Value": "once"
             },
             {
                 "Name": "ControllerURL",
-                "Value": "https://customer.saas.appdynamics.com"
+                "Value": "http://controller-2060nosshco-o3wdq4ip.appd-cx.com:8090"
             },
             {
                 "Name": "OAuthToken", 

@@ -9,7 +9,7 @@ AppDynamics has an inbuilt solution to instantaneously mark nodes as historical,
 
 The above solution does not work in some instances due to the following reasons: 
 
-1. This will ONLY work if the instrumented application shuts down gracefully, this is seldom the case for containerised applications. 
+1. This will ONLY work if the instrumented application shuts down gracefully, this is seldom the case for containerized applications. 
 2. The .Net agent has not implemented a similar solution
 3. The minimum time the Controller can be configured to mark nodes as historical is 1 hour, this is too long in most cases as it results in false-positive alerts. The setting is called `node.retention.period` . 
 4. No granularity to selectively apply the setting (in 3 above) to a set of applications or tiers. 
@@ -44,6 +44,7 @@ The script was written and test in Powershell Core 6.0  - which means it can run
   | ControllerURL  | You AppDynamics controller URL - including http/s bit |
   | OAuthToken  | Create an API Client that has an admin privilege on the target application(s). [READ MORE](https://docs.appdynamics.com/display/latest/API+Clients) |
   | ApplicationList | Define the list of target applications, comma separated: app1,app2,app3  |
+  | ExecuteOnceORContinuous | Defaults to `once`. Set this to `continuous` if you need this script to run continuously in background. When to set to `once`, it the overrides `ExecutionFrequencyInMinutes` setting  |
 
 2. Run the `NodeReaper.ps1` script. 
 
@@ -61,9 +62,15 @@ The script was written and test in Powershell Core 6.0  - which means it can run
 2020/01/07 01:08:06 INFO Marked ZZ1-2KSN12PNIC2(843097) in appd-fix-sleeving-dev application as a historical node.
 ``````````````
 
-## Running in a Docker container 
+## Docker
 
-*  To run this script in a docker container, enter the details in the config.json file as described above and run `docker-compose up` .   
+You may pull the official image `docker pull  appdynamicscx/mark-nodes-historical` or build yours using the `build-docker-image.ps1` script
+
+* To run this script in a docker container, enter the details in the `config.json` file as described above and run `docker-compose up` .   
+
+Alternatively, use environment variables as shown in the `env.list` file. For example: 
+
+`docker run -d --env-file env.list appdynamicscx/mark-nodes-historical`
 
 The first time you run this command, you will see a lot of console output as the Docker image is built, followed by output similar to this:
 
@@ -101,6 +108,12 @@ Attaching to node-reaper
 * To Stop the container, run:  `docker-compose stop`
 
 * To Rebuild the container, `run docker-compose up --build`
+
+
+
+## Kubernetes 
+
+Please refer to the `kubernetes` folder for the manifest examples. 
 
 ## What is Next 
 

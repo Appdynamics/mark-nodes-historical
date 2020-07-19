@@ -1,0 +1,35 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: mark-nodes-historical
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: mark-nodes-historical
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          nodeSelector:
+             kubernetes.io/os: linux
+          containers:
+          - image: appdynamicscx/mark-nodes-historical
+            name: mark-nodes-historical
+            resources: {}
+            envFrom:
+              - configMapRef:
+                  name: mark-nodes-historical-config
+            env: 
+            - name: APPDYNAMICS_TARGET_APPLICATIONS
+              value: "winContainer-Demo,Jenkins_API"
+            - name: APPDYNAMICS_OAUTH_TOKEN
+              valueFrom:
+                 secretKeyRef: 
+                    name: mark-nodes-historical-secret
+                    key: jwt
+          restartPolicy: OnFailure
+  schedule: '*/5 * * * *'
+status: {}

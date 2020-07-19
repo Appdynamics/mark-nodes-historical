@@ -1,6 +1,6 @@
-
 logs/*
 testconfig.json
 env.list.local
+kubernetes
 
 
