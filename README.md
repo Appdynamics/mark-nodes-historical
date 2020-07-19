@@ -1,4 +1,7 @@
-# Mark Nodes Historical
+# Mark Nodes Historical 
+
+<b> Note: This project is NOT officially supported by AppDynamcis </b>
+
 Mark AppDynamics Nodes as Historical Nodes 
 
 In a typical microservices architecture where services are designed to be transient, AppDynamics customers may notice that although a service instance or container has been destroyed, the node that represents the service in question is still visible in the AppDynamics Controller - often with a critical health status.  
