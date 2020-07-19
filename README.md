@@ -1,6 +1,6 @@
 # Mark Nodes Historical 
 
-<b> Note: This project is NOT officially supported by AppDynamcis </b>
+<b> Note: This project is NOT officially supported by AppDynamics </b>
 
 Mark AppDynamics Nodes as Historical Nodes 
 
