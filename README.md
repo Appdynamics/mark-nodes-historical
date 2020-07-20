@@ -38,16 +38,16 @@ The script was written and test in Powershell Core 6.0  - which means it can run
 
 ### Running the script 
 
-1. Modify the config.json file properties as described in the table below: 
+1. Modify the config.json file properties as described in the table below or the environment variable if you intend to run it from Docker or Kubernetes
 
-  | **Config Property Name** | **Description** |
-  | --- | --- |
-  | NodeAvailabilityThresholdInMinutes  | This threshold is used to determine nodes that are due to be marked as historical on the basis of how long a node has lost contact with the Controller |
-  | ExecutionFrequencyInMinutes  | This config property controls how long the script sleeps after each execution. Use this to control the execution frequency |
-  | ControllerURL  | You AppDynamics controller URL - including http/s bit |
-  | OAuthToken  | Create an API Client that has an admin privilege on the target application(s). [READ MORE](https://docs.appdynamics.com/display/latest/API+Clients) |
-  | ApplicationList | Define the list of target applications, comma separated: app1,app2,app3  |
-  | ExecuteOnceORContinuous | Defaults to `once`. Set this to `continuous` if you need this script to run continuously in the background. When to set to `once`, it the overrides `ExecutionFrequencyInMinutes` setting  |
+  | **Config Property Name** | **Environment Variable**| **Description** |
+  | --- | --- |--- |
+  | NodeAvailabilityThresholdInMinutes  |  APPDYNAMICS_NODE_AVAILABILITY_THRESHOLD  |This threshold is used to determine nodes that are due to be marked as historical on the basis of how long a node has lost contact with the Controller |
+  | ExecutionFrequencyInMinutes  | APPDYNAMICS_EXECUTION_FREQUENCY  | This config property controls how long the script sleeps after each execution. Use this to control the execution frequency |
+  | ControllerURL  | APPDYNAMICS_CONTROLLER_URL  | You AppDynamics controller URL - including http/s bit |
+  | OAuthToken  | APPDYNAMICS_OAUTH_TOKEN  | Create an API Client that has an admin privilege on the target application(s). [READ MORE](https://docs.appdynamics.com/display/latest/API+Clients) |
+  | ApplicationList | APPDYNAMICS_TARGET_APPLICATIONS | Define the list of target applications, comma separated: app1,app2,app3  |
+  | ExecuteOnceORContinuous | APPDYNAMICS_EXECUTE_ONCE_OR_CONTINUOUS| Defaults to `once`. Set this to `continuous` if you need this script to run continuously in the background. When to set to `once`, it the overrides `ExecutionFrequencyInMinutes` setting  |
 
 2. Run the `NodeReaper.ps1` script. 
 
