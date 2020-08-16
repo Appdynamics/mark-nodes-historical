@@ -3,7 +3,7 @@ $LogDir = ".\logs"
 $ilogFile = "Audit.log"
 
 $LogPath = $LogDir + '\' + $iLogFile
-
+$confFile = ".\config.json"
 #Load Logger Function - relative path
 # Function to Write into Log file
 Function Write-Log {
@@ -37,12 +37,6 @@ if (!(Test-Path $LogDir)) {
     New-Item -Path $LogDir -ItemType directory
     New-Item -Path $LogDir -Name $iLogFile -ItemType File
 }
-else {
-    Write-Host "$LogDir exists" 
-        
-}
-
-$confFile = ".\config.json"
 
 if (!(Test-Path $confFile)) {
     Write-Log ERROR "The $confFile file must exist in the script's path. Exiting " $LogPath
@@ -106,8 +100,8 @@ if ([string]::IsNullOrEmpty($controllerURL) -or [string]::IsNullOrEmpty($OAuthTo
   
     Write-Host "One or more required parameter value is/are missing" 
 
-    Write-Host " Controller URL: $controllerURL"
-    Write-Host " OAuthToken: $OAuthToken"
+    Write-Host " Controller URL: $controllerURL "
+    Write-Host " OAuthToken: $OAuthToken "
     Write-Host " Target Applications : $apps"
     Write-Host " ThresholdInMintues : $ThresholdInMintues"
     Write-Host " ExecutionFrequencyInMinutes : $ExecutionFrequencyInMinutes"
@@ -117,7 +111,7 @@ if ([string]::IsNullOrEmpty($controllerURL) -or [string]::IsNullOrEmpty($OAuthTo
 }
 
 #default ExecuteOnceORContinuous to Once
-if ([string]::IsNullOrEmpty($JobType)){
+if ([string]::IsNullOrEmpty($JobType)) {
     $JobType = "Once"
 }
 
@@ -125,7 +119,6 @@ if ([string]::IsNullOrEmpty($JobType)){
 $controllerURL = $controllerURL.trim('/')
 
 [int]$SleepTime = $ExecutionFrequencyInMinutes * 60 
-Write-Host $SleepTime
 
 if ($SleepTime -gt 2147483) {
     Write-Host "The ExecutionFrequencyInMinutes value, $ExecutionFrequencyInMinutes ($SleepTime)secs is greater than the maximum allowed value of 35791 minutes in Powershell." -ForegroundColor RED
@@ -134,70 +127,95 @@ if ($SleepTime -gt 2147483) {
 $JWTToken = "Bearer $OAuthToken"
 $historicalEndPoint = "$controllerURL/controller/rest/mark-nodes-historical?application-component-node-ids"
 $headers = @{Authorization = $JWTToken }
+$endpoint_get_applications = "$controllerURL/controller/rest/applications?output=json"
+
 While ($true) {
     ForEach ($application in $apps.Split(",")) {
-        $msg = "Proccessing $application application"
+        $msg = "Proccessing $application application `n"
         Write-Host $msg
-        $getNodesEndPoint = "$controllerURL/controller/rest/applications/" + $application + "/nodes"  
-        try {
-            [xml] $XMLData = Invoke-RestMethod -Uri $getNodesEndPoint -Method Get -Headers $headers 
-        }
-        catch {
-            Write-Warning "$($error[0])"
-            Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
-            Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
-            Write-Host "ErrorMessage:" $_.Exception.Message
-        }
-        ForEach ($node in $XMLData.nodes.node) {
-            $nname = $node.name
-            $msg = "Checking $nname"
-            Write-Host $msg
-            $reapMe = $true
-            $metricPath = "Application Infrastructure Performance|" + $node.tierName + "|Individual Nodes|" + $node.name + "|Agent|App|Availability"
+        
+        Write-Host "Checking if $application exist in the controller... `n"
+        $applicationObjects = Invoke-RestMethod -Uri $endpoint_get_applications -Method Get -ContentType "application/json" -Headers $headers
+        #Write-Host " response - $applicationObjects"
+        $targetApplication = $applicationObjects | Where-Object { $_.Name -eq $application }
+
+        if (![string]::IsNullOrEmpty($targetApplication)) {
+            Write-Host "Found $targetApplication in the controller `n"
+       
+            $getNodesEndPoint = "$controllerURL/controller/rest/applications/" + $application + "/nodes"  
             try {
-                $nodeAvailability = "$controllerURL/controller/rest/applications/$application/metric-data?metric-path=$metricPath&time-range-type=BEFORE_NOW&duration-in-mins=$ThresholdInMintues&output=JSON&rollup=true"
-                $metrics = Invoke-RestMethod -Uri $nodeAvailability -Method Get -ContentType "application/json" -Headers $headers
-                if ($metrics.metricValues.sum -gt 0) {
-                    $reapMe = $false
-                }
-                Write-Host $reapMe
+                [xml] $XMLData = Invoke-RestMethod -Uri $getNodesEndPoint -Method Get -Headers $headers 
             }
             catch {
-                Write-Host "Exception occured whilst checking availability for node: " $node.name
+                Write-Warning "$($error[0])"
+                Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+                Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
+                Write-Host "ErrorMessage:" $_.Exception.Message
             }
-        
-            if ($reapMe) {
+
+            ForEach ($node in $XMLData.nodes.node) {
                 $nname = $node.name
-                $nid = $node.id
+                $msg = "Processing $nname node..."
+                Write-Host $msg
+                $reapMe = $true
+                $metricPath = "Application Infrastructure Performance|" + $node.tierName + "|Individual Nodes|" + $node.name + "|Agent|App|Availability"
                 try {
-                    $response = Invoke-RestMethod -Uri "$historicalEndPoint=$nid" -Method POST -Headers $headers 
-                    Write-Host "Response: " $response
-                    if ($response -match $nid) { 
-                        $msg = "Marked $nname($nid) in $application application as a historical node."
-                        Write-Host $msg
-                        Write-Log INFO $msg $LogPath
+                    $nodeAvailability = "$controllerURL/controller/rest/applications/$application/metric-data?metric-path=$metricPath&time-range-type=BEFORE_NOW&duration-in-mins=$ThresholdInMintues&output=JSON&rollup=true"
+                    $metrics = Invoke-RestMethod -Uri $nodeAvailability -Method Get -ContentType "application/json" -Headers $headers
+                    if ($metrics.metricValues.sum -gt 0) {
+                        $reapMe = $false
+                        Write-Host "Skipping $nname node because it is active `n"
+                    }else{
+                        Write-Host "$nname has not reported metrics since $ThresholdInMintues minutes `n"
                     }
-                    else {
-                        Write-Host "Something went wrong, the node-name ($nid) is expected in the response from AppDynamics. The recieved response is: $response" -ForegroundColor red
-                    }
-        
+                    Write-Host ""
+                    #Write-Host $reapMe
                 }
                 catch {
-                    Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
-                    Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
-                    Write-Host "ErrorMessage:" $_.Exception.Message
+                    Write-Host "Exception occured whilst checking availability for node: " $node.name
+                }
+        
+                if ($reapMe) {
+                    $nname = $node.name
+                    $nid = $node.id
+                    try {
+                        $response = Invoke-RestMethod -Uri "$historicalEndPoint=$nid" -Method POST -Headers $headers 
+                        #Write-Host "Response: " $response
+                        if ($response -match $nid) { 
+                            $msg = "Marked $nname($nid) in $application application as a historical node. `n"
+                            Write-Host $msg
+                            Write-Log INFO $msg $LogPath
+                        }
+                        else {
+                            Write-Host "Something went wrong, the node-name ($nid) is expected in the response from AppDynamics. The recieved response is: $response" -ForegroundColor red
+                        }
+        
+                    }
+                    catch {
+                        Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+                        Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
+                        Write-Host "ErrorMessage:" $_.Exception.Message
+                    }
+                    Write-Host ""
+                    Start-Sleep -Seconds 2
                 }
             }
+            #End App split loop   
         }
-        #End App split loop   
-    }
-    #End While Loop 
+        else {
+            $msg = "The application $application does not exist in the controller. Nothing to do. `n"
+            Write-Host $msg
+            Write-Log INFO $msg $LogPath
+        }
+        Start-Sleep -Seconds 2
+    }#End While Loop 
     Write-Host "Applying JobType instructon... you selected type = $JobType"
     if ($JobType -like "once" -or $JobType -like "one") {
         Write-Host "Completed. Stopping..".  
         Break Script
     
-    }else{
+    }
+    else {
         Write-Host "Going to sleep for $SleepTime before trying again"
         Start-Sleep -Seconds $SleepTime
     }
