@@ -16,7 +16,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD_CX }}
           repository: appdynamicscx/mark-nodes-historical
           tags: "latest"
-          tag_with_ref: refs/tags/{git-tag}
+          tag_with_ref: true
           dockerfile: Dockerfile
       
        
