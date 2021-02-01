@@ -2,7 +2,7 @@
 
 <b> Note: This project is NOT officially supported by AppDynamics </b>
 
-Mark AppDynamics Nodes as Historical Nodes 
+# Mark AppDynamics Nodes as Historical Nodes 
 
 In a typical microservices architecture where services are designed to be transient, AppDynamics customers may notice that although a service instance or container has been destroyed, the node that represents the service in question is still visible in the AppDynamics Controller - often with a critical health status.  
 
@@ -25,7 +25,7 @@ Furthermore, whilst AppDynamics will not display a historical node, the controll
 
 ## Installation 
 
-The script was written and test in Powershell Core 6.0  - which means it can run across Linux, Windows, macOS or even as a Lambda function. 
+The script was written and tested in Powershell Core 6.0  - which means it can run across Linux, Windows, macOS, containers, and can be bundled into a Lambda function. 
 
  - How to install PowerShell Core on [Linux
    Documentation](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-6)
