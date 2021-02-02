@@ -1,4 +1,4 @@
-# Mark Nodes Historical - Docker and Kubernetes
+# Mark Nodes Historical
 
 <b> Note: This project is NOT officially supported by AppDynamics </b>
 
