@@ -209,7 +209,7 @@ While ($true) {
         }
         Start-Sleep -Seconds 2
     }#End While Loop 
-    Write-Host "Applying JobType instructon... you selected type = $JobType"
+    Write-Host "Applying JobType instruction... you selected type = $JobType"
     if ($JobType -like "once" -or $JobType -like "one") {
         Write-Host "Completed. Stopping..".  
         Break Script
